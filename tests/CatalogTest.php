@@ -125,11 +125,39 @@ class CatalogTest extends TestCase
         $xInfo = $this->xInfo();
         $Catalog = $this->Catalog();
 
-        $result = $Catalog->catalog('electronic14', 1, [846, 6240], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), couponsGeo: explode(',', $xInfo['couponsGeo']));
+        $result = $Catalog->catalog('electronic14', [], 1, [846, 6240], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), couponsGeo: explode(',', $xInfo['couponsGeo']));
 
         $this->assertEquals(0, $result->state, $Catalog->requestPath());
         $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
         $this->assertIsArray($result->data->products, $Catalog->requestPath());
+    }
+
+    public function test_filter(): void
+    {
+        $xInfo = $this->xInfo();
+        $Catalog = $this->Catalog();
+
+        $result = $Catalog->filter('electronic14', [], 1, [846, 6240], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), couponsGeo: explode(',', $xInfo['couponsGeo']));
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
+        $this->assertIsArray($result->data->filters, $Catalog->requestPath());
+    }
+
+    public function test_subjects(): void
+    {
+        $Catalog = $this->Catalog();
+
+        $result = $Catalog->subjects();
+
+        $this->assertIsArray($result, $Catalog->requestPath());
+        
+        $first = array_pop($result);
+        
+        $this->assertObjectHasAttribute('id', $first, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('name', $first, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('url', $first, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('childs', $first, $Catalog->requestPath());
     }
 
 }
