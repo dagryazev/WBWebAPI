@@ -160,4 +160,14 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('childs', $first, $Catalog->requestPath());
     }
 
+    public function test_setUserLoc(): void
+    {
+        $Catalog = $this->Catalog();
+
+        $result = $Catalog->setUserLoc('г Краснодар, Улица Ленина 50', 45.023, 38.97358);
+
+        $this->assertArrayHasKey('__region', $result, $Catalog->requestPath());
+        $this->assertArrayHasKey('__dst', $result, $Catalog->requestPath());
+    }
+
 }

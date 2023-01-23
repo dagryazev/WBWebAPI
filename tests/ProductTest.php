@@ -87,16 +87,6 @@ class ProductTest extends TestCase
         $this->assertObjectHasAttribute('supplierId', $seller, $Product->requestPath());
     }
 
-    public function test_videos(): void
-    {
-        $Product = $this->Product();
-        $nmId = $this->randomNmId();
-
-        $result = $Product->videos($nmId);
-
-        $this->assertIsArray($result, $Product->requestPath());
-    }
-
     public function test_similar(): void
     {
         $Product = $this->Product();

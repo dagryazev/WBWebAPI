@@ -105,7 +105,7 @@ class Catalog extends AbstractEndpoint
         ], 'FORM');
     }
     
-    public function expressStore($latitude, $longitude)
+    public function expressStore(string $latitude, string $longitude)
     {
         return $this->request('https://www.wildberries.ru/webapi/spa/product/expressstore', [
             'latitude' => $latitude,
@@ -280,5 +280,25 @@ class Catalog extends AbstractEndpoint
             'spp' => 0,
             'emp' => 0,
         ] + $filter);
+    }
+    
+    public function setUserLoc(string $address, float $latitude, float $longitude): array
+    {
+        $this->request('https://www.wildberries.ru/webapi/geo/saveprefereduserloc', [
+            'address' => $address,
+            'longitude' => $longitude,
+            'latitude' => $latitude,
+        ], 'FORM', [
+            'x-requested-with' => 'XMLHttpRequest'
+        ]);
+        $headers = $this->responseHeaders();
+        $cookies = [];
+        foreach($headers['Set-Cookie'] ?? [] as $item) {
+            $vars = explode(';', $item);
+            list($name, $value) = explode('=', $vars[0]);
+            $cookies[$name] = urldecode($value);
+        }
+
+        return $cookies;
     }
 }

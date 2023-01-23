@@ -115,19 +115,6 @@ class Product extends AbstractEndpoint
     }
 
     /**
-     * Видео
-     * 
-     * @param int $nmId
-     * @return array
-     */
-    public function videos(int $nmId): array
-    {
-        return $this->request('https://video-reviews.wildberries.ru/api/v1/video-by-nm', [
-            'nm' => $nmId
-        ]);
-    }
-
-    /**
      * Похожие товары
      * 
      * @param int $nmId

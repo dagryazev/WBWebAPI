@@ -22,7 +22,7 @@ $Product->similar(13615125);
 $Product->priceHistory(13615125);
 
 // Товары в разделе
-$Catalog->catalog(page: 1, shard: 'electronic3', subject: [515], regions: [80,64,83,4,38,33,70,68,69,86,75,30,40,48,1,66,31,22,71], dest: [-1029256,-102269,-2162196,-1255942]);
+$Catalog->catalog(page: 1, shard: 'electronic3', subject: [515], filter: [], regions: [80,64,83,4,38,33,70,68,69,86,75,30,40,48,1,66,31,22,71], dest: [-1029256,-102269,-2162196,-1255942]);
 // Данные о поставщике
 $Catalog->supplierInfo(28976);
 
