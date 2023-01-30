@@ -20,19 +20,6 @@ class Catalog extends AbstractEndpoint
     }
 
     /**
-     * Персональные предложения для пользователя
-     * 
-     * @param int $userId
-     * @return array
-     */
-    public function persGoods(int $userId = 0): array
-    {
-        return $this->request('https://main-page.wildberries.ru/api/v1/pers-goods', [
-            'userID' => $userId
-        ]);
-    }
-
-    /**
      * Данные о поставщике
      * 
      * @param int $supplierId
@@ -146,43 +133,93 @@ class Catalog extends AbstractEndpoint
         return $this->request('https://static-basket-01.wb.ru/vol0/data/no-return-subjects.json');
     }
 
-    public function xInfo()
+    /**
+     * Товары в категории
+     * 
+     * @param string $shard
+     * @param int $category
+     * @param array $filter
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
+     * @return object
+     */
+    public function category(string $shard, int $category, array $filter = [], int $page = 1, string $sort = 'popular'): object
     {
-        return $this->request('https://www.wildberries.ru/webapi/user/get-xinfo-v2', [], 'POST', [
-            'x-requested-with' => 'XMLHttpRequest',
-        ]);
+        return $this->request('https://catalog.wb.ru/catalog/' . $shard . '/catalog', [
+            'appType' => 1,
+            'cat' => $category,
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'dest' => implode(',', $this->Setup->dest()),
+            'emp' => 0,
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'page' => $page,
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'regions' => implode(',', $this->Setup->regions()),
+            'sort' => $sort,
+            'spp' => $this->Setup->spp(),
+        ] + $filter);
+    }
+
+    /**
+     * Фильтр для категории
+     * 
+     * @param string $shard
+     * @param int $category
+     * @param array $filter
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
+     * @return object
+     */
+    public function categoryFilter(string $shard, int $category, array $filter = [], int $page = 1, string $sort = 'popular'): object
+    {
+        return $this->request('https://catalog.wb.ru/catalog/' . $shard . '/v4/filters', [
+            'appType' => 1,
+            'cat' => $category,
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'dest' => implode(',', $this->Setup->dest()),
+            'emp' => 0,
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'page' => $page,
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'regions' => implode(',', $this->Setup->regions()),
+            'sort' => $sort,
+            'spp' => $this->Setup->spp(),
+        ] + $filter);
     }
 
     /**
      * Товары в разделе
      * 
      * @param string $shard
-     * @param int $page
      * @param array $subject
-     * @param array $regions
-     * @param array $dest
+     * @param array $filter
+     * @param int $page
      * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
-     * @param array $couponsGeo
      * @param int $kind
-     * @param string $curr
      * @return object
      */
-    public function catalog(string $shard, array $filter, int $page, array $subject, array $regions, array $dest, string $sort = 'popular', array $couponsGeo = [], int $kind = 0, string $curr = 'rub'): object
+    public function catalog(string $shard, array $subject, array $filter = [], int $page = 1, string $sort = 'popular', int $kind = 0): object
     {
         return $this->request('https://catalog.wb.ru/catalog/' . $shard . '/catalog', [
             'page' => $page,
             'subject' => implode(';', $subject),
             'sort' => $sort,
             'kind' => $kind,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
-            'curr' => $curr,
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
-            'spp' => 0,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'emp' => 0,
         ] + $filter);
     }
@@ -191,31 +228,29 @@ class Catalog extends AbstractEndpoint
      * Фильтры для товаров в разделе
      * 
      * @param string $shard
+     * @param int $subject
      * @param array $filter
      * @param int $page
-     * @param int $subject
-     * @param array $regions
-     * @param array $dest
      * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
-     * @param array $couponsGeo
-     * @param string $curr
+     * @param int $kind
      * @return object
      */
-    public function filter(string $shard, array $filter, int $page, array $subject, array $regions, array $dest, string $sort = 'popular', array $couponsGeo = [], string $curr = 'rub'): object
+    public function filter(string $shard, array $subject, array $filter = [], int $page = 1, string $sort = 'popular', int $kind = 0): object
     {
         return $this->request('https://catalog.wb.ru/catalog/' . $shard . '/v4/filters', [
             'page' => $page,
             'subject' => implode(';', $subject),
             'sort' => $sort,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
-            'curr' => $curr,
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
-            'spp' => 0,
+            'kind' => $kind,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'emp' => 0,
         ] + $filter);
     }
@@ -224,30 +259,28 @@ class Catalog extends AbstractEndpoint
      * Товары поставщика
      * 
      * @param int $supplierId
-     * @param int $page
      * @param array $filter
-     * @param array $regions
-     * @param array $dest
+     * @param int $page
      * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
-     * @param array $couponsGeo
-     * @param string $curr
+     * @param int $kind
      * @return object
      */
-    public function sellerCatalog(int $supplierId, int $page, array $filter, array $regions, array $dest, string $sort = 'popular', array $couponsGeo = [], string $curr = 'rub'): object
+    public function sellerCatalog(int $supplierId, array $filter = [], int $page = 1, string $sort = 'popular', int $kind = 0): object
     {
         return $this->request('https://catalog.wb.ru/sellers/catalog', [
             'page' => $page,
             'supplier' => $supplierId,
             'sort' => $sort,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
-            'curr' => $curr,
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
-            'spp' => 0,
+            'kind' => $kind,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'emp' => 0,
         ] + $filter);
     }
@@ -256,49 +289,30 @@ class Catalog extends AbstractEndpoint
      * Филитры для товаров поставщика
      * 
      * @param int $supplierId
-     * @param int $page
      * @param array $filter
-     * @param array $regions
-     * @param array $dest
-     * @param array $couponsGeo
-     * @param string $curr
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
+     * @param int $kind
      * @return object
      */
-    public function sellerCatalogFilter(int $supplierId, int $page, array $filter, array $regions, array $dest, array $couponsGeo = [], string $curr = 'rub'): object
+    public function sellerCatalogFilter(int $supplierId, array $filter = [], int $page = 1, string $sort = 'popular', int $kind = 0): object
     {
         return $this->request('https://catalog.wb.ru/sellers/v4/filters', [
             'page' => $page,
             'supplier' => $supplierId,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
-            'curr' => $curr,
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
-            'spp' => 0,
+            'sort' => $sort,
+            'kind' => $kind,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'emp' => 0,
         ] + $filter);
     }
     
-    public function setUserLoc(string $address, float $latitude, float $longitude): array
-    {
-        $this->request('https://www.wildberries.ru/webapi/geo/saveprefereduserloc', [
-            'address' => $address,
-            'longitude' => $longitude,
-            'latitude' => $latitude,
-        ], 'FORM', [
-            'x-requested-with' => 'XMLHttpRequest'
-        ]);
-        $headers = $this->responseHeaders();
-        $cookies = [];
-        foreach($headers['Set-Cookie'] ?? [] as $item) {
-            $vars = explode(';', $item);
-            list($name, $value) = explode('=', $vars[0]);
-            $cookies[$name] = urldecode($value);
-        }
-
-        return $cookies;
-    }
 }

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Dakword\WBWebAPI\Endpoint;
 
 use Dakword\WBWebAPI\Client;
+use Dakword\WBWebAPI\Setup;
 
 abstract class AbstractEndpoint
 {
     private Client $Client;
-
-    public function __construct()
+    protected Setup $Setup;
+    
+    function __construct(Setup $user)
     {
         $this->Client = new Client();
+        $this->Setup = $user;
     }
 
     protected function request(string $url, array $data = [], string $method = 'GET', array $addonHeaders = [])

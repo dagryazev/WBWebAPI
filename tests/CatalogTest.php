@@ -19,13 +19,6 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('childs', $first);
     }
 
-    public function test_persGoods(): void
-    {
-        $Catalog = $this->Catalog();
-        $result = $Catalog->persGoods();
-        $this->assertIsArray($result, $Catalog->requestPath());
-    }
-
     public function test_supplierInfo(): void
     {
         $nmId = $this->randomNmId();
@@ -93,15 +86,6 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('value', $result, $Catalog->requestPath());
     }
 
-    public function test_xInfo(): void
-    {
-        $Catalog = $this->Catalog();
-        $result = $Catalog->xInfo();
-
-        $this->assertObjectHasAttribute('xinfo', $result, $Catalog->requestPath());
-        $this->assertObjectHasAttribute('shard', $result, $Catalog->requestPath());
-    }
-
     public function test_expressStore(): void
     {
         $Catalog = $this->Catalog();
@@ -120,12 +104,41 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('brandsList', $result->value, $Catalog->requestPath());
     }
 
+    public function test_category(): void
+    {
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        // Мужчинам / Джинсы
+        $result = $Catalog->category('men_clothes2', 8149);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
+        $this->assertGreaterThan(10, count($result->data->products), $Catalog->requestPath());
+    }
+
+    public function test_categoryFilter(): void
+    {
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        // Мужчинам / Джинсы
+        $result = $Catalog->categoryFilter('men_clothes2', 8149);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
+        $this->assertGreaterThan(10, $result->data->total, $Catalog->requestPath());
+    }
+
     public function test_catalog(): void
     {
-        $xInfo = $this->xInfo();
-        $Catalog = $this->Catalog();
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
 
-        $result = $Catalog->catalog('electronic14', [], 1, [846, 6240], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), couponsGeo: explode(',', $xInfo['couponsGeo']));
+        $result = $Catalog->catalog('electronic14', [846, 6240]);
 
         $this->assertEquals(0, $result->state, $Catalog->requestPath());
         $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
@@ -134,10 +147,45 @@ class CatalogTest extends TestCase
 
     public function test_filter(): void
     {
-        $xInfo = $this->xInfo();
-        $Catalog = $this->Catalog();
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
 
-        $result = $Catalog->filter('electronic14', [], 1, [846, 6240], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), couponsGeo: explode(',', $xInfo['couponsGeo']));
+        $result = $Catalog->filter('electronic14', [846, 6240]);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
+        $this->assertIsArray($result->data->filters, $Catalog->requestPath());
+    }
+
+    public function test_sellerCatalog(): void
+    {
+        $nmId = $this->randomNmId();
+        $card = $this->Product()->card($nmId);
+        $supplierId = $card->selling->supplier_id;
+
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        $result = $Catalog->sellerCatalog($supplierId);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
+        $this->assertIsArray($result->data->products, $Catalog->requestPath());
+    }
+
+    public function test_sellerCatalogFilter(): void
+    {
+        $nmId = $this->randomNmId();
+        $card = $this->Product()->card($nmId);
+        $supplierId = $card->selling->supplier_id;
+
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        $result = $Catalog->sellerCatalogFilter($supplierId);
 
         $this->assertEquals(0, $result->state, $Catalog->requestPath());
         $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
@@ -158,16 +206,6 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('name', $first, $Catalog->requestPath());
         $this->assertObjectHasAttribute('url', $first, $Catalog->requestPath());
         $this->assertObjectHasAttribute('childs', $first, $Catalog->requestPath());
-    }
-
-    public function test_setUserLoc(): void
-    {
-        $Catalog = $this->Catalog();
-
-        $result = $Catalog->setUserLoc('г Краснодар, Улица Ленина 50', 45.023, 38.97358);
-
-        $this->assertArrayHasKey('__region', $result, $Catalog->requestPath());
-        $this->assertArrayHasKey('__dst', $result, $Catalog->requestPath());
     }
 
 }

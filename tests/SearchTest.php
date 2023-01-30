@@ -18,9 +18,10 @@ class SearchTest extends TestCase
 
     public function test_catalog(): void
     {
-        $xInfo = $this->xInfo();
-        $Search = $this->Search();
-        $result = $Search->catalog('шуба', 1, explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), 'popular', [], explode(',', $xInfo['couponsGeo']));
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Search = $webApi->Search();
+        $result = $Search->catalog('шуба');
 
         $this->assertIsObject($result, $Search->requestPath());
         $this->assertEquals(0, $result->state, $Search->requestPath());
@@ -29,9 +30,10 @@ class SearchTest extends TestCase
 
     public function test_filters(): void
     {
-        $xInfo = $this->xInfo();
-        $Search = $this->Search();
-        $result = $Search->filters('шуба', 1, explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), 'popular', [], explode(',', $xInfo['couponsGeo']));
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Search = $webApi->Search();
+        $result = $Search->filters('шуба');
 
         $this->assertIsObject($result, $Search->requestPath());
         $this->assertEquals(0, $result->state, $Search->requestPath());
@@ -49,9 +51,8 @@ class SearchTest extends TestCase
 
     public function test_similarQueries(): void
     {
-        $xInfo = $this->xInfo();
         $Search = $this->Search();
-        $result = $Search->similarQueries('шуба', explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), explode(',', $xInfo['couponsGeo']));
+        $result = $Search->similarQueries('шуба');
 
         $this->assertIsObject($result, $Search->requestPath());
         $this->assertObjectHasAttribute('brands', $result, $Search->requestPath());

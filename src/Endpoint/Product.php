@@ -25,45 +25,47 @@ class Product extends AbstractEndpoint
      * "Промотовары", "Похожие товары", "С этим товаром покупали", "С товаром рекомендуют"
      * 
      * @param array $nmIds
-     * @param array $regions
-     * @param array $dest
-     * @param int $spp
-     * @param array $couponsGeo
      * @return object
      */
-    public function cardsList(array $nmIds, array $regions, array $dest, int $spp = 0, array $couponsGeo = []): object
+    public function cardsList(array $nmIds): object
     {
         return $this->request('https://card.wb.ru/cards/list', [
-            'spp' => $spp,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
             'nm' => implode(';', $nmIds),
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'appType' => 1,
             'emp' => 0,
-            'locale' => 'ru',
-            'lang' => 'ru',
-            'curr' => 'rub',
-            'couponsGeo' => implode(',', $couponsGeo),
         ]);
     }
 
-    public function cardsDetail(array $nmIds, array $regions, array $dest, int $spp = 0, array $couponsGeo = []): object
+    /**
+     * Дутали о товарах
+     * 
+     * @param array $nmIds
+     * @return object
+     */
+    public function cardsDetail(array $nmIds): object
     {
         return $this->request('https://card.wb.ru/cards/detail', [
-            'spp' => $spp,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
             'nm' => implode(';', $nmIds),
-            'pricemarginCoeff' => '1.0',
-            'reg' => 0,
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'appType' => 1,
             'emp' => 0,
-            'locale' => 'ru',
-            'lang' => 'ru',
-            'curr' => 'rub',
-            'couponsGeo' => implode(',', $couponsGeo),
         ]);
     }
 

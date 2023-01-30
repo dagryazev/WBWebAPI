@@ -18,13 +18,13 @@ class Search extends AbstractEndpoint
      * @param string $lang
      * @return array
      */
-    public function suggests(string $query = '', string $gender = 'common', string $locale = 'ru', string $lang = 'ru'): array
+    public function suggests(string $query = '', string $gender = 'common'): array
     {
         return $this->request('https://search.wb.ru/suggests/api/v3/hint', [
             'query' => $query,
             'gender' => $gender,
-            'locale' => $locale,
-            'lang' => $lang,
+            'locale' => $this->Setup->locale(),
+            'lang' => $this->Setup->lang(),
         ]);
     }
     
@@ -32,64 +32,55 @@ class Search extends AbstractEndpoint
      * Результаты поиска
      * 
      * @param string $query
-     * @param int $page
-     * @param array $regions
-     * @param array $dest
-     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
      * @param array $filter
-     * @param array $couponsGeo
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
      * @return array
      */
-    public function catalog(string $query, int $page, array $regions, array $dest, string $sort = 'popular', array $filter = [], array $couponsGeo = []): object
+    public function catalog(string $query, array $filter = [], int $page = 1, string $sort = 'popular'): object
     {
-        return $this->search($query, $page, $regions, $dest, 'catalog', $sort, $filter, $couponsGeo);
+        return $this->search($query, $filter,  $page, 'catalog', $sort);
     }
 
     /**
      * Фильтры для результатов поиска
      * 
      * @param string $query
-     * @param int $page
-     * @param array $regions
-     * @param array $dest
-     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
      * @param array $filter
-     * @param array $couponsGeo
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
      * @return array
      */
-    public function filters(string $query, int $page, array $regions, array $dest, string $sort = 'popular', array $filter = [], array $couponsGeo = []): object
+    public function filters(string $query, array $filter = [], int $page = 1, string $sort = 'popular'): object
     {
-        return $this->search($query, $page, $regions, $dest, 'filters', $sort, $filter, $couponsGeo);
+        return $this->search($query, $filter, $page, 'filters', $sort);
     }
 
     /**
      * @param string $query
+     * @param array $filter
      * @param int $page
-     * @param array $regions
-     * @param array $dest
      * @param string $resultset 'catalog', 'filters'
      * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
-     * @param array $filter
-     * @param array $couponsGeo
      * @return array
      */
-    public function search(string $query, int $page, array $regions, array $dest, string $resultset = 'catalog', string $sort = 'popular', array $filter = [], array $couponsGeo = []): object
+    public function search(string $query, array $filter = [], int $page = 1, string $resultset = 'catalog', string $sort = 'popular'): object
     {
         return $this->request('https://search.wb.ru/exactmatch/ru/common/v4/search', [
             'query' => $query,
             'page' => $page,
             'sort' => $sort,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsGeo()),
             'resultset' => $resultset,
-            'curr' => 'rub',
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemarginCoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'reg' => 0,
-            'spp' => 0,
             'emp' => 0,
             'suppressSpellcheck' => 'false',
         ] + $filter);
@@ -112,25 +103,22 @@ class Search extends AbstractEndpoint
      * С этим запросом ищут
      * 
      * @param string $query
-     * @param array $regions
-     * @param array $dest
-     * @param array $couponsGeo
      * @return object
      */
-    public function similarQueries(string $query, array $regions, array $dest, array $couponsGeo = []): object
+    public function similarQueries(string $query): object
     {
         return $this->request('https://similar-queries.wildberries.ru/api/v2/search/query', [
             'query' => $query,
-            'regions' => implode(',', $regions),
-            'dest' => implode(',', $dest),
-            'couponsGeo' => implode(',', $couponsGeo),
-            'curr' => 'rub',
-            'lang' => 'ru',
-            'locale' => 'ru',
-            'pricemarginCoeff' => '1.0',
+            'regions' => implode(',', $this->Setup->regions()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'couponsGeo' => implode(',', $this->Setup->couponsGeo()),
+            'curr' => $this->Setup->curr(),
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'pricemarginCoeff' => $this->Setup->pricemarginCoeff(),
+            'reg' => $this->Setup->reg(),
+            'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'reg' => 0,
-            'spp' => 0,
             'emp' => 0,
         ]);
     }

@@ -20,7 +20,6 @@ class ProductTest extends TestCase
 
     public function test_cardsList(): void
     {
-        $xInfo = $this->xInfo();
         $Product = $this->Product();
 
         $nmId1 = $this->randomNmId();
@@ -29,7 +28,7 @@ class ProductTest extends TestCase
         $nmId4 = $this->randomNmId();
         $nmId5 = $this->randomNmId();
 
-        $cards = $Product->cardsList([$nmId1, $nmId2, $nmId3, $nmId4, $nmId5], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), $xInfo['spp'], explode(',', $xInfo['couponsGeo']));
+        $cards = $Product->cardsList([$nmId1, $nmId2, $nmId3, $nmId4, $nmId5]);
 
         $this->assertIsObject($cards, $Product->requestPath());
         $this->assertIsArray($cards->data->products, $Product->requestPath());
@@ -37,14 +36,6 @@ class ProductTest extends TestCase
 
     public function test_cardsDetail(): void
     {
-        $Catalog = $this->Catalog();
-        $xInfo = [];
-        foreach (explode('&', $Catalog->xInfo()->xinfo) as $chunk) {
-            $param = explode("=", $chunk);
-            if ($param) {
-                $xInfo[urldecode($param[0])] = urldecode($param[1]);
-            }
-        }
         $Product = $this->Product();
 
         $nmId1 = $this->randomNmId();
@@ -53,7 +44,7 @@ class ProductTest extends TestCase
         $nmId4 = $this->randomNmId();
         $nmId5 = $this->randomNmId();
 
-        $cards = $Product->cardsDetail([$nmId1, $nmId2, $nmId3, $nmId4, $nmId5], explode(',', $xInfo['regions']), explode(',', $xInfo['dest']), $xInfo['spp'], explode(',', $xInfo['couponsGeo']));
+        $cards = $Product->cardsDetail([$nmId1, $nmId2, $nmId3, $nmId4, $nmId5]);
 
         $this->assertIsObject($cards, $Product->requestPath());
         $this->assertIsArray($cards->data->products, $Product->requestPath());

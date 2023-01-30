@@ -32,11 +32,10 @@ class AdsTest extends TestCase
 
         $result = $Ads->productCarousel($nmId);
         $this->assertIsArray($result, $Ads->requestPath());
-        if($result) {
+        if ($result) {
             $first = array_pop($result);
             $this->assertObjectHasAttribute('position', $first, $Ads->requestPath());
         }
     }
-
 
 }
