@@ -16,7 +16,7 @@ class Catalog extends AbstractEndpoint
      */
     public function mainMenu(): array
     {
-        return $this->request('https://static-basket-01.wb.ru/vol0/data/main-menu-ru-ru.json');
+        return $this->request('https://static-basket-01.wb.ru/vol0/data/main-menu-ru-ru-v2.json');
     }
 
     /**
