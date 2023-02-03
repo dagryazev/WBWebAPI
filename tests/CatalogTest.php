@@ -208,4 +208,36 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('childs', $first, $Catalog->requestPath());
     }
 
+    public function test_brandCatalog(): void
+    {
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        // PHILIPS
+        $brandId = 6012;
+        $result = $Catalog->brandCatalog('p', $brandId);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
+        $this->assertGreaterThan(10, count($result->data->products), $Catalog->requestPath());
+        
+        $product = array_pop($result->data->products);
+        $this->assertEquals($brandId, $product->brandId, $Catalog->requestPath());
+    }
+
+    public function test_brandCatalogFilter(): void
+    {
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+
+        // PHILIPS
+        $brandId = 6012;
+        $result = $Catalog->brandCatalogFilter('p', $brandId);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
+        $this->assertGreaterThan(10, $result->data->total, $Catalog->requestPath());
+    }
 }

@@ -314,5 +314,65 @@ class Catalog extends AbstractEndpoint
             'emp' => 0,
         ] + $filter);
     }
+
+    /**
+     * Каталог бренда
+     * 
+     * @param string $shard
+     * @param array $brandId
+     * @param array $filter
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
+     * @return object
+     */
+    public function brandCatalog(string $shard, int $brandId, array $filter = [], int $page = 1, string $sort = 'popular'): object
+    {
+        return $this->request('https://catalog.wb.ru/brands/' . $shard . '/catalog', [
+            'appType' => 1,
+            'brand' => $brandId,
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'dest' => implode(',', $this->Setup->dest()),
+            'emp' => 0,
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'page' => $page,
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'regions' => implode(',', $this->Setup->regions()),
+            'sort' => $sort,
+            'spp' => $this->Setup->spp(),
+        ] + $filter);
+    }
+
+    /**
+     * Фильтр для каталога бренда
+     * 
+     * @param string $shard
+     * @param int $brandId
+     * @param array $filter
+     * @param int $page
+     * @param string $sort 'popular', 'rate', 'priceup', 'pricedown', 'newly', 'benefit'
+     * @return object
+     */
+    public function brandCatalogFilter(string $shard, int $brandId, array $filter = [], int $page = 1, string $sort = 'popular'): object
+    {
+        return $this->request('https://catalog.wb.ru/brands/' . $shard . '/v4/filters', [
+            'appType' => 1,
+            'brand' => $brandId,
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'curr' => $this->Setup->curr(),
+            'dest' => implode(',', $this->Setup->dest()),
+            'emp' => 0,
+            'lang' => $this->Setup->lang(),
+            'locale' => $this->Setup->locale(),
+            'page' => $page,
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'regions' => implode(',', $this->Setup->regions()),
+            'sort' => $sort,
+            'spp' => $this->Setup->spp(),
+        ] + $filter);
+    }
     
 }
