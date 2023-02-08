@@ -123,6 +123,11 @@ class Catalog extends AbstractEndpoint
         ]);
     }
 
+    /**
+     * Справочник категорий товаров
+     * 
+     * @return array
+     */
     public function subjects(): array
     {
         return $this->request('https://static-basket-01.wb.ru/vol0/data/subject-base.json');
@@ -131,6 +136,16 @@ class Catalog extends AbstractEndpoint
     public function noReturnSubjects(): object
     {
         return $this->request('https://static-basket-01.wb.ru/vol0/data/no-return-subjects.json');
+    }
+
+    /**
+     * Идентификаторы предметов категории "для взрослых"
+     * 
+     * @return array
+     */
+    public function adultSubjects(): array
+    {
+        return $this->request('https://static-basket-01.wb.ru/vol0/data/adult-subjects.json');
     }
 
     /**

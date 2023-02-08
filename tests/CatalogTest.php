@@ -208,6 +208,25 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('childs', $first, $Catalog->requestPath());
     }
 
+    public function test_noreturnsubjects(): void
+    {
+        $Catalog = $this->Catalog();
+
+        $result = $Catalog->noReturnSubjects();
+
+        $this->assertIsObject($result, $Catalog->requestPath());
+    }
+
+    public function test_adultsubjects(): void
+    {
+        $Catalog = $this->Catalog();
+
+        $result = $Catalog->adultSubjects();
+
+        $this->assertIsArray($result, $Catalog->requestPath());
+        $this->assertGreaterThan(10, count($result), $Catalog->requestPath());
+    }
+
     public function test_brandCatalog(): void
     {
         $webApi = $this->webApi();
