@@ -188,7 +188,7 @@ class Product extends AbstractEndpoint
      */
     public function feedbacks(int $imtId): object
     {
-        return $this->request('https://feedbacks1.wb.ru/feedbacks/v1/' . $imtId);
+        return $this->request('https://feedbacks2.wb.ru/feedbacks/v1/' . $imtId);
     }
 
     /**

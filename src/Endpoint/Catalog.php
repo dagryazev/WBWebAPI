@@ -46,6 +46,11 @@ class Catalog extends AbstractEndpoint
         ]);
     }
 
+    public function supplierShortInfo(int $sellerId): object
+    {
+        return $this->request('https://www.wildberries.ru/webapi/seller/data/short/' . $sellerId);
+    }
+    
     /**
      * Бренды "на букву"
      * 

@@ -146,6 +146,7 @@ class ProductTest extends TestCase
         $result = $Product->feedbacks($nmId);
 
         $this->assertObjectHasAttribute('feedbacks', $result, $Product->requestPath());
+        $this->assertObjectHasAttribute('feedbackCount', $result, $Product->requestPath());
     }
 
     public function test_recomendations(): void

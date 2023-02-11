@@ -43,6 +43,19 @@ class CatalogTest extends TestCase
         $this->assertTrue(in_array($supplierId, array_column($result, 'id')));
     }
 
+    public function test_supplierShortInfo(): void
+    {
+        $nmId = $this->randomNmId();
+        $card = $this->Product()->card($nmId);
+        $supplierId = $card->selling->supplier_id;
+
+        $Catalog = $this->Catalog();
+        $result = $Catalog->supplierShortInfo($supplierId);
+
+        $this->assertEquals($supplierId, $result->id, $Catalog->requestPath());
+    }
+
+
     public function test_brandById(): void
     {
         $Catalog = $this->Catalog();
