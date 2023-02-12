@@ -117,6 +117,14 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('brandsList', $result->value, $Catalog->requestPath());
     }
 
+    public function test_premiumBrands(): void
+    {
+        $Catalog = $this->Catalog();
+        $result = $Catalog->premiumBrands();
+        
+        $this->assertTrue(in_array('BOSS', array_column($result, 'name')));
+    }
+
     public function test_category(): void
     {
         $webApi = $this->webApi();

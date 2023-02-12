@@ -41,7 +41,7 @@ class Product extends AbstractEndpoint
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ]);
     }
 
@@ -65,7 +65,7 @@ class Product extends AbstractEndpoint
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ]);
     }
 

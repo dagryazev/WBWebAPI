@@ -46,6 +46,12 @@ class Catalog extends AbstractEndpoint
         ]);
     }
 
+    /**
+     * Основные данные о поставщике
+     * 
+     * @param int $sellerId
+     * @return object
+     */
     public function supplierShortInfo(int $sellerId): object
     {
         return $this->request('https://www.wildberries.ru/webapi/seller/data/short/' . $sellerId);
@@ -97,6 +103,16 @@ class Catalog extends AbstractEndpoint
         ], 'FORM');
     }
     
+    /**
+     * Перечень "премиальных брендов"
+     * 
+     * @return array
+     */
+    public function premiumBrands(): array
+    {
+        return $this->request('https://static-basket-01.wb.ru/vol0/data/brands-premium-ru.json');
+    }
+
     public function expressStore(string $latitude, string $longitude)
     {
         return $this->request('https://www.wildberries.ru/webapi/spa/product/expressstore', [
@@ -171,7 +187,7 @@ class Catalog extends AbstractEndpoint
             'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
             'curr' => $this->Setup->curr(),
             'dest' => implode(',', $this->Setup->dest()),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
             'lang' => $this->Setup->lang(),
             'locale' => $this->Setup->locale(),
             'page' => $page,
@@ -201,7 +217,7 @@ class Catalog extends AbstractEndpoint
             'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
             'curr' => $this->Setup->curr(),
             'dest' => implode(',', $this->Setup->dest()),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
             'lang' => $this->Setup->lang(),
             'locale' => $this->Setup->locale(),
             'page' => $page,
@@ -240,7 +256,7 @@ class Catalog extends AbstractEndpoint
             'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ] + $filter);
     }
 
@@ -271,7 +287,7 @@ class Catalog extends AbstractEndpoint
             'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ] + $filter);
     }
 
@@ -301,7 +317,7 @@ class Catalog extends AbstractEndpoint
             'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ] + $filter);
     }
 
@@ -331,7 +347,7 @@ class Catalog extends AbstractEndpoint
             'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ] + $filter);
     }
 
@@ -353,7 +369,7 @@ class Catalog extends AbstractEndpoint
             'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
             'curr' => $this->Setup->curr(),
             'dest' => implode(',', $this->Setup->dest()),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
             'lang' => $this->Setup->lang(),
             'locale' => $this->Setup->locale(),
             'page' => $page,
@@ -383,7 +399,7 @@ class Catalog extends AbstractEndpoint
             'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
             'curr' => $this->Setup->curr(),
             'dest' => implode(',', $this->Setup->dest()),
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
             'lang' => $this->Setup->lang(),
             'locale' => $this->Setup->locale(),
             'page' => $page,

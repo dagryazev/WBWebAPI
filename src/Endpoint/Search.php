@@ -81,7 +81,7 @@ class Search extends AbstractEndpoint
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
             'suppressSpellcheck' => 'false',
         ] + $filter);
     }
@@ -119,7 +119,7 @@ class Search extends AbstractEndpoint
             'reg' => $this->Setup->reg(),
             'spp' => $this->Setup->spp(),
             'appType' => 1,
-            'emp' => 0,
+            'emp' => $this->Setup->emp(),
         ]);
     }
 

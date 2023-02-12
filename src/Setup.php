@@ -10,6 +10,7 @@ namespace Dakword\WBWebAPI;
  * @method array couponsgeo()
  * @method int reg()
  * @method int spp()
+ * @method int emp()
  * @method string pricemargincoeff()
  * @method string locale()
  * @method string lang()
@@ -20,6 +21,7 @@ namespace Dakword\WBWebAPI;
  * @method self withCouponsGeo(array $couponsGeo) default empty
  * @method self withReg(int $reg) default 0
  * @method self withSpp(int $spp) default 0
+ * @method self withEmp(int $emp) default 0
  * @method self withPricemarginCoeff(string $pricemarginCoeff) default "1.0"
  * @method self withLocale(string $locale) default "ru"
  * @method self withLang(string $lang) default "ru"
@@ -30,6 +32,7 @@ namespace Dakword\WBWebAPI;
  * @method void setCouponsGeo(array $couponsGeo)
  * @method void setReg(int $reg)
  * @method void setSpp(int $spp)
+ * @method void setEmp(int $emp)
  * @method void setPricemarginCoeff(string $pricemarginCoeff)
  * @method void setLocale(string $locale)
  * @method void setLang(string $lang)
@@ -43,20 +46,12 @@ class Setup
         'couponsgeo' => [],
         'reg' => 0,
         'spp' => 0,
+        'emp' => 0,
         'pricemargincoeff' => '1.0',
         'locale' => 'ru',
         'lang' => 'ru',
         'curr' => 'rub',
     ];
-
-    function __get($name)
-    {
-        if (array_key_exists(strtolower($name), $this->options)) {
-            return $this->options[strtolower($name)];
-        } else {
-            return null;
-        }
-    }
 
     function __construct(array $options = [])
     {
@@ -64,6 +59,15 @@ class Setup
             if (array_key_exists($option, $this->options)) {
                 $this->options[$option] = $value;
             }
+        }
+    }
+
+    function __get($name)
+    {
+        if (array_key_exists(strtolower($name), $this->options)) {
+            return $this->options[strtolower($name)];
+        } else {
+            return null;
         }
     }
 
