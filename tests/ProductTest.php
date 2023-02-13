@@ -88,6 +88,16 @@ class ProductTest extends TestCase
         $this->assertIsArray($result, $Product->requestPath());
     }
 
+    public function test_visualSimilar(): void
+    {
+        $Product = $this->Product();
+        $nmId = $this->randomNmId();
+
+        $result = $Product->visualSimilar($nmId);
+
+        $this->assertIsArray($result, $Product->requestPath());
+    }
+
     public function test_identical(): void
     {
         $Product = $this->Product();

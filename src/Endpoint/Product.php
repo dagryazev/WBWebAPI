@@ -130,6 +130,19 @@ class Product extends AbstractEndpoint
     }
 
     /**
+     * Похожие по фото
+     * 
+     * @param int $nmId
+     * @return array
+     */
+    public function visualSimilar(int $nmId): array
+    {
+        return $this->request('https://in-visual-similar.wildberries.ru', [
+            'nm' => $nmId
+        ]);
+    }
+
+    /**
      * Предложения других продавцов
      * 
      * @param int $nmId
