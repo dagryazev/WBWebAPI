@@ -269,7 +269,13 @@ class Product extends AbstractEndpoint
                                             ? "basket-08.wb.ru"
                                             : ($t >= 1170 && $t <= 1313
                                                 ? "basket-09.wb.ru"
-                                                : "basket-10.wb.ru"
+                                                : ($t >= 1314 && $t <= 1601
+                                                    ? "basket-10.wb.ru"
+                                                    : ($t >= 1602 && $t <= 1889
+                                                        ? "basket-11.wb.ru"
+                                                        : "basket-12.wb.ru"
+                                                    )
+                                                )
                                             )
                                         )
                                     )
