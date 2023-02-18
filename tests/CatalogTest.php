@@ -280,4 +280,22 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('filters', $result->data, $Catalog->requestPath());
         $this->assertGreaterThan(10, $result->data->total, $Catalog->requestPath());
     }
+
+    public function test_setBasket(): void
+    {
+        $nmId1 = $this->randomNmId();
+        $nmId2 = $this->randomNmId();
+
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Catalog = $webApi->Catalog();
+        $result = $Catalog->setBasket([$nmId1, $nmId2]);
+
+        $this->assertEquals(0, $result->state, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('products', $result->data, $Catalog->requestPath());
+        $this->assertCount(2, $result->data->products, $Catalog->requestPath());
+
+        $this->assertTrue(in_array($nmId1, array_column($result->data->products, 'id')));
+        $this->assertTrue(in_array($nmId2, array_column($result->data->products, 'id')));
+    }
 }

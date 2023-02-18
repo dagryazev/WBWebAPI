@@ -210,7 +210,7 @@ class Product extends AbstractEndpoint
      * @param int $nmId
      * @return object
      */
-    public function recomendations(int $nmId): object
+    public function recommendations(int $nmId): object
     {
         return $this->request('https://rec-goods.wildberries.ru/api/v1/recommendations', [
             'nm' => $nmId,

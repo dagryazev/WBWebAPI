@@ -164,7 +164,7 @@ class ProductTest extends TestCase
         $Product = $this->Product();
         $nmId = $this->randomNmId();
 
-        $result = $Product->recomendations($nmId);
+        $result = $Product->recommendations($nmId);
 
         $this->assertObjectHasAttribute('nms', $result, $Product->requestPath());
         $this->assertObjectHasAttribute('services', $result, $Product->requestPath());

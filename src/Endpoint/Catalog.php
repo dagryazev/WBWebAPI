@@ -410,5 +410,29 @@ class Catalog extends AbstractEndpoint
             'spp' => $this->Setup->spp(),
         ] + $filter);
     }
+
+    /**
+     * Заполнить корзину
+     * 
+     * @param array $nmIds
+     * @return object
+     */    
+    public function setBasket(array $nmIds): object
+    {
+        return $this->request('https://card.wb.ru/cards/basket', [
+            'spp' => $this->Setup->spp(),
+            'regions' => implode(',', $this->Setup->regions()),
+            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+            'reg' => $this->Setup->reg(),
+            'appType' => 1,
+            'emp' => $this->Setup->emp(),
+            'locale' => $this->Setup->locale(),
+            'lang' => $this->Setup->lang(),
+            'curr' => $this->Setup->curr(),
+            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+            'dest' => implode(',', $this->Setup->dest()),
+            'nm' => implode(';', $nmIds),
+        ]);
+    }
     
 }
