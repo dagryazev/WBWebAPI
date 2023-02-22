@@ -99,6 +99,16 @@ class CatalogTest extends TestCase
         $this->assertObjectHasAttribute('value', $result, $Catalog->requestPath());
     }
 
+    public function test_pooCount(): void
+    {
+        $Catalog = $this->Catalog();
+        $result = $Catalog->pooCount();
+
+        $this->assertEquals(0, $result->resultState, $Catalog->requestPath());
+        $this->assertObjectHasAttribute('Value', $result, $Catalog->requestPath());
+        $this->assertGreaterThan(1000, $result->Value, $Catalog->requestPath());
+    }
+
     public function test_expressStore(): void
     {
         $Catalog = $this->Catalog();

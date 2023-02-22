@@ -145,6 +145,18 @@ class Catalog extends AbstractEndpoint
     }
 
     /**
+     * Количество пунктов выдачи
+     * 
+     * @return object
+     */
+    public function pooCount(): object
+    {
+        return $this->request('https://www.wildberries.ru/webapi/delivery/poo/count', [], 'POST', [
+            'x-requested-with' => 'XMLHttpRequest',
+        ]);
+    }
+    
+    /**
      * Справочник категорий товаров
      * 
      * @return array
