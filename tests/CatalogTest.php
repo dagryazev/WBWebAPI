@@ -93,10 +93,15 @@ class CatalogTest extends TestCase
     public function test_pooByIds(): void
     {
         $Catalog = $this->Catalog();
-        $result = $Catalog->pooByIds([1]);
+        $allPoos = $Catalog->allPoo();
+        $ruPoos = $allPoos[array_search('ru', array_column($allPoos, 'country'))];
+        $poo = $ruPoos->items[array_rand($ruPoos->items, 1)];
+        
+        $result = $Catalog->pooByIds([$poo->id]);
 
         $this->assertEquals(0, $result->resultState, $Catalog->requestPath());
         $this->assertObjectHasAttribute('value', $result, $Catalog->requestPath());
+        $this->assertObjectHasAttribute($poo->id, $result->value, $Catalog->requestPath());
     }
 
     public function test_pooCount(): void
@@ -104,7 +109,7 @@ class CatalogTest extends TestCase
         $Catalog = $this->Catalog();
         $result = $Catalog->pooCount();
 
-        $this->assertEquals(0, $result->resultState, $Catalog->requestPath());
+        $this->assertEquals(0, $result->ResultState, $Catalog->requestPath());
         $this->assertObjectHasAttribute('Value', $result, $Catalog->requestPath());
         $this->assertGreaterThan(1000, $result->Value, $Catalog->requestPath());
     }
