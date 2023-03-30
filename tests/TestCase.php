@@ -68,9 +68,10 @@ class TestCase extends PHPUnitTestCase
     protected function fillSetupByXinfo(Setup $Setup): void
     {
         $xInfo = $this->xInfo();
+
         $Setup->setRegions(explode(',', $xInfo['regions']));
         $Setup->setDest(explode(',', $xInfo['dest']));
-        $Setup->setCouponsGeo(explode(',', $xInfo['couponsGeo']));
+        $Setup->setCouponsGeo(explode(',', $xInfo['couponsGeo']??''));
     }
 
 }

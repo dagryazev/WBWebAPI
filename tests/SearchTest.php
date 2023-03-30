@@ -51,7 +51,9 @@ class SearchTest extends TestCase
 
     public function test_similarQueries(): void
     {
-        $Search = $this->Search();
+        $webApi = $this->webApi();
+        $this->fillSetupByXinfo($webApi->Setup());
+        $Search = $webApi->Search();
         $result = $Search->similarQueries('шуба');
 
         $this->assertIsObject($result, $Search->requestPath());
