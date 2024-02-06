@@ -1,5 +1,5 @@
 {
-    "name": "dakword/wbwebapi",
+    "name": "dagryazev/wbwebapi",
     "description": "Wildberries WebAPI exploit",
     "keywords": ["wildberries", "web", "api"],
     "type": "library",
