@@ -11,7 +11,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Основное меню
-     * 
+     *
      * @return array
      */
     public function mainMenu(): array
@@ -21,7 +21,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Данные о поставщике
-     * 
+     *
      * @param int $supplierId
      * @return object
      */
@@ -34,7 +34,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Данные о перечне поставщиков
-     * 
+     *
      * @param array $suppliersIds
      * @return array
      */
@@ -48,7 +48,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Основные данные о поставщике
-     * 
+     *
      * @param int $sellerId
      * @return object
      */
@@ -56,21 +56,21 @@ class Catalog extends AbstractEndpoint
     {
         return $this->request('https://www.wildberries.ru/webapi/seller/data/short/' . $sellerId);
     }
-    
+
     /**
      * Бренды "на букву"
-     * 
+     *
      * @param string $letter a, b, c, ... z, 123, а-я
-     * @return type
+     * @return object
      */
-    public function brandsList(string $letter)
+    public function brandsList(string $letter): object
     {
         return $this->request('https://www.wildberries.ru/webapi/wildberries/brandlist/data?letter=' . $letter, [], 'POST');
     }
-    
+
     /**
      * Данные о бренде по идентификатору
-     * 
+     *
      * @param int $brandId
      * @return object
      */
@@ -78,10 +78,10 @@ class Catalog extends AbstractEndpoint
     {
         return $this->request('https://static.wbstatic.net/data/brands-by-id/' . $brandId . '.json');
     }
-    
+
     /**
      * Данные о бренде по наименованию
-     * 
+     *
      * @param string $brandName
      * @return object
      */
@@ -89,10 +89,10 @@ class Catalog extends AbstractEndpoint
     {
         return $this->request('https://static.wbstatic.net/data/brands/' . $brandName . '.json');
     }
-    
+
     /**
      * Количество добавлений бренда в закладки
-     * 
+     *
      * @param int $brandId
      * @return object
      */
@@ -102,10 +102,10 @@ class Catalog extends AbstractEndpoint
             'brandId' => $brandId
         ], 'FORM');
     }
-    
+
     /**
      * Перечень "премиальных брендов"
-     * 
+     *
      * @return array
      */
     public function premiumBrands(): array
@@ -123,7 +123,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Список ПВЗ
-     * 
+     *
      * @return array
      */
     public function allPoo(): array
@@ -133,7 +133,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * ПВЗ по перечню идентификаторов
-     * 
+     *
      * @param array $ids
      * @return object
      */
@@ -146,7 +146,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Количество пунктов выдачи
-     * 
+     *
      * @return object
      */
     public function pooCount(): object
@@ -155,10 +155,10 @@ class Catalog extends AbstractEndpoint
             'x-requested-with' => 'XMLHttpRequest',
         ]);
     }
-    
+
     /**
      * Справочник категорий товаров
-     * 
+     *
      * @return array
      */
     public function subjects(): array
@@ -173,7 +173,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Идентификаторы предметов категории "для взрослых"
-     * 
+     *
      * @return array
      */
     public function adultSubjects(): array
@@ -183,7 +183,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Товары в категории
-     * 
+     *
      * @param string $shard
      * @param int $category
      * @param array $filter
@@ -194,26 +194,26 @@ class Catalog extends AbstractEndpoint
     public function category(string $shard, int $category, array $filter = [], int $page = 1, string $sort = 'popular'): object
     {
         return $this->request('https://catalog.wb.ru/catalog/' . $shard . '/catalog', [
-            'appType' => 1,
-            'cat' => $category,
-            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
-            'curr' => $this->Setup->curr(),
-            'dest' => implode(',', $this->Setup->dest()),
-            'emp' => $this->Setup->emp(),
-            'lang' => $this->Setup->lang(),
-            'locale' => $this->Setup->locale(),
-            'page' => $page,
-            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
-            'reg' => $this->Setup->reg(),
-            'regions' => implode(',', $this->Setup->regions()),
-            'sort' => $sort,
-            'spp' => $this->Setup->spp(),
-        ] + $filter);
+                'appType' => 1,
+                'cat' => $category,
+//            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
+                'curr' => $this->Setup->curr(),
+                'dest' => implode(',', $this->Setup->dest()),
+//            'emp' => $this->Setup->emp(),
+//            'lang' => $this->Setup->lang(),
+//            'locale' => $this->Setup->locale(),
+                'page' => $page,
+//            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
+//            'reg' => $this->Setup->reg(),
+//            'regions' => implode(',', $this->Setup->regions()),
+                'sort' => $sort,
+                'spp' => $this->Setup->spp(),
+            ] + $filter);
     }
 
     /**
      * Фильтр для категории
-     * 
+     *
      * @param string $shard
      * @param int $category
      * @param array $filter
@@ -243,7 +243,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Товары в разделе
-     * 
+     *
      * @param string $shard
      * @param array $subject
      * @param array $filter
@@ -274,7 +274,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Фильтры для товаров в разделе
-     * 
+     *
      * @param string $shard
      * @param int $subject
      * @param array $filter
@@ -305,7 +305,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Товары поставщика
-     * 
+     *
      * @param int $supplierId
      * @param array $filter
      * @param int $page
@@ -335,7 +335,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Филитры для товаров поставщика
-     * 
+     *
      * @param int $supplierId
      * @param array $filter
      * @param int $page
@@ -345,27 +345,18 @@ class Catalog extends AbstractEndpoint
      */
     public function sellerCatalogFilter(int $supplierId, array $filter = [], int $page = 1, string $sort = 'popular', int $kind = 0): object
     {
-        return $this->request('https://catalog.wb.ru/sellers/v4/filters', [
-            'page' => $page,
-            'supplier' => $supplierId,
-            'sort' => $sort,
-            'kind' => $kind,
-            'regions' => implode(',', $this->Setup->regions()),
-            'dest' => implode(',', $this->Setup->dest()),
-            'couponsGeo' => implode(',', $this->Setup->couponsgeo()),
-            'curr' => $this->Setup->curr(),
-            'lang' => $this->Setup->lang(),
-            'locale' => $this->Setup->locale(),
-            'pricemarginCoeff' => $this->Setup->pricemargincoeff(),
-            'reg' => $this->Setup->reg(),
-            'spp' => $this->Setup->spp(),
-            'emp' => $this->Setup->emp(),
-        ] + $filter);
+        return $this->request('https://catalog.wb.ru/sellers/filters', [
+                'page' => $page,
+                'supplier' => $supplierId,
+                'dest' => implode(',', $this->Setup->dest()),
+                'curr' => $this->Setup->curr(),
+                'spp' => $this->Setup->spp(),
+            ] + $filter);
     }
 
     /**
      * Каталог бренда
-     * 
+     *
      * @param string $shard
      * @param array $brandId
      * @param array $filter
@@ -395,7 +386,7 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Фильтр для каталога бренда
-     * 
+     *
      * @param string $shard
      * @param int $brandId
      * @param array $filter
@@ -425,10 +416,10 @@ class Catalog extends AbstractEndpoint
 
     /**
      * Заполнить корзину
-     * 
+     *
      * @param array $nmIds
      * @return object
-     */    
+     */
     public function setBasket(array $nmIds): object
     {
         return $this->request('https://card.wb.ru/cards/basket', [
@@ -446,5 +437,5 @@ class Catalog extends AbstractEndpoint
             'nm' => implode(';', $nmIds),
         ]);
     }
-    
+
 }
