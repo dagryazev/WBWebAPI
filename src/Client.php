@@ -7,6 +7,7 @@ namespace Dakword\WBWebAPI;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\RequestOptions;
 use InvalidArgumentException;
 
 class Client
@@ -19,12 +20,9 @@ class Client
     public $requestPath = null;
     private HttpClient $Client;
 
-    function __construct()
+    function __construct(HttpClient $client)
     {
-        $this->Client = new HttpClient([
-            'timeout' => 0, // in seconds
-            'verify' => false,
-        ]);
+        $this->Client = $client;
     }
 
     /**

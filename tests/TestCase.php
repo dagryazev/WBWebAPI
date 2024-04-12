@@ -2,14 +2,16 @@
 
 namespace Dakword\WBWebAPI\Tests;
 
-use PHPUnit\Framework\TestCase as PHPUnitTestCase;
-use Dakword\WBWebAPI\WebAPI;
-use Dakword\WBWebAPI\Setup;
 use Dakword\WBWebAPI\Endpoint\Ads;
 use Dakword\WBWebAPI\Endpoint\Catalog;
 use Dakword\WBWebAPI\Endpoint\Product;
 use Dakword\WBWebAPI\Endpoint\Search;
 use Dakword\WBWebAPI\Endpoint\User;
+use Dakword\WBWebAPI\Setup;
+use Dakword\WBWebAPI\WebAPI;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\RequestOptions;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
 class TestCase extends PHPUnitTestCase
 {
@@ -17,7 +19,19 @@ class TestCase extends PHPUnitTestCase
 
     protected function webApi(): WebAPI
     {
-        return new WebAPI();
+        return new WebAPI(
+            null,
+            new \Dakword\WBWebAPI\Client(
+                new HttpClient([
+                    RequestOptions::PROXY => [
+//                        'https' => 'http://2BnYgE:MjHnET@193.124.178.181:9544',
+                        'https' => 'http://EoFHm6:5gCyed@131.108.17.239:9184',
+                    ],
+                    'timeout' => 5, // in seconds
+                    'verify' => false,
+                ])
+            )
+        );
     }
 
     protected function Ads(): Ads

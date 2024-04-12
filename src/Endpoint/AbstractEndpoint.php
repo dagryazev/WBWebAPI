@@ -11,10 +11,10 @@ abstract class AbstractEndpoint
 {
     private Client $Client;
     protected Setup $Setup;
-    
-    function __construct(Setup $user)
+
+    function __construct(Setup $user, Client $client)
     {
-        $this->Client = new Client();
+        $this->Client = $client;
         $this->Setup = $user;
     }
 
